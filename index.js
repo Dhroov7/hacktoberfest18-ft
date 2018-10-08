@@ -3,47 +3,42 @@ var i = 0;
 
 var getData = (function($) {
   var URL =
-    "https://api.github.com/repos/rowhitswami/hacktoberfest18-ft/commits?per_page=100";
+    "https://api.github.com/repos/rowhitswami/hacktoberfest18-ft/contributors";
 
   $.get(URL, function(data, status) {
-    console.log(data[0]);
+    console.log(data);
     data.forEach(function(d) {
-      if (d.author == null) {
+      if (d.login == null) {
         return true;
       }
 
-      if (users.indexOf(d.commit.author.email) == -1) {
-        var mes = d.commit.message;
-        var name = d.commit.author.name;
-
-        if (name == "") {
-          name = mes;
-        }
+      if (users.indexOf(d.id) == -1) {
+        var name = d.login;
 
         var template =
           "<div class='col-md-3 col-xs-6 col-lg-3' id='author'><div class='container-fluid'>" +
           "<a class='thumbnail' target='_blank' href='" +
-          d.author.html_url +
+          d.html_url +
           "'>" +
           "<img src='" +
-          d.author.avatar_url +
+          d.avatar_url +
           "' alt='' class='img-responsive'>" +
           "</a>" +
           "<div class='caption'>" +
           "<a target='_blank' href='" +
-          d.author.html_url +
+          d.html_url +
           "'>" +
           "<strong>" +
-          d.author.login +
+          d.login +
           "</strong>" +
           "</a>" +
           "<p>" +
-          name +
+          d.login +
           "</p>" +
           "</div></div></div>";
 
         $("#contributors").append(template);
-        users[i] = d.commit.author.email;
+        users[i] = d.id;
         i = i + 1;
       }
     });
